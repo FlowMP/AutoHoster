@@ -12,6 +12,7 @@ fnpath = os.getenv("FNPATH")
 userargs = os.getenv("ARGS")
 redirect = os.getenv("REDIRECT")
 server = os.getenv("SERVER")
+injector = os.getenv("INJECTOR")
 
 def CheckForCrash():
     while (True):
@@ -61,10 +62,10 @@ def launchfn():
             print(output) 
             if 'Platform has ' in output:
                 print("Injecting redirect!")
-                os.system(f"{dir}\CLIInjector.exe -p {process.pid} -i {redirect}")
+                os.system(f"{injector} -p {process.pid} -i {redirect}")
             if 'Region ' in output:
                 print("Injecting server!")
-                os.system(f"{dir}\CLIInjector.exe -p {process.pid} -i {server}") # i promise this is fine
+                os.system(f"{injector} -p {process.pid} -i {server}") # i promise this is fine
     process.wait()
     return
 
