@@ -18,7 +18,6 @@ def CheckForCrash():
     while (True):
         output = subprocess.check_output(["tasklist", "/FI", "IMAGENAME eq CrashReportClient.exe"]).decode("utf-8")
         if "INFO: No tasks are running which match the specified criteria" not in output:
-            os.system("taskkill /f /im FortniteClient-*")
             os.system("taskkill /f /im CrashReportClient.exe")
 
 CheckForCrashes = threading.Thread(target=CheckForCrash)
@@ -46,8 +45,13 @@ blategame = os.getenv("LATEGAME")
 binfmats = os.getenv("INFMATS")
 binfammo = os.getenv("INFAMMO")
 
-args += f" -playlist={playlist} -port={port} -region={region} -mmcode={mmcode} -lategame={blategame} -infmats={binfmats} -infammo={binfammo}"
+starthealth = os.getenv("STARTHEALTH")
+startshield = os.getenv("STARTSHIELD")
+siphon = os.getenv("SIPHON")
 
+args += f" -playlist={playlist} -port={port} -region={region} -mmcode={mmcode} -lategame={blategame} -infmats={binfmats} -infammo={binfammo} -startshield={startshield} -starthealth={starthealth} -siphon={siphon}"
+
+os.system(f"\"{injector}\"")
 print(exe + args)
 os.system("pause")
 
@@ -56,10 +60,10 @@ def launchfn():
 
     while True:
         output = process.stdout.readline().strip()
+        print(output)
         if output == '' and process.poll() is not None:
             break
         if output:
-            print(output) 
             if 'Platform has ' in output:
                 print("Injecting redirect!")
                 os.system(f"{injector} -p {process.pid} -i {redirect}")
